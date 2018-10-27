@@ -27,6 +27,7 @@ float simpanpny1[size]={};
 float simpanpny2[size]={};
 float temp;
 int size3= 0;
+float p1,p2;
 //variable input
 int pinjaman[100] = {500000};
 
@@ -37,6 +38,17 @@ float bunga_p = 10;
     int bulan = 15;
 
     int bunga;
+    float tbt,tbm,nmax,nmin;
+    char * str;
+	char * str1;
+	char * str2;
+	char * str3;
+	char * str4;
+	int tbtbaru;
+	int tbmbaru;
+	int nmaxbaru;
+	int nminbaru;
+int pe1;
 
 
 float penyusutan(float bunga, float hargabarang, float periode){
@@ -193,6 +205,73 @@ printf("    '========================='\n\n\n");
 
 }
 
+void ui_help(){
+ printf("\n");
+printf("    .======================.\n");
+printf("    |       BANTUAN        |\n");
+printf("    '======================'\n\n\n");
+
+}
+
+void ui_riwayat(){
+ printf("\n");
+printf("    .======================.\n");
+printf("    |        RIWAYAT       |\n");
+printf("    '======================'\n\n\n");
+
+}
+
+void help(){
+	
+	printf("  1. Jika saldo yang Anda masukkan melebihi dari batas wajar, atau kurang dari nominal Rp. 50.000,00 \n     maka sistem kami tidak akan memproses.\n\n");
+	printf("  2. Periode yang di input tidak melebihi 12 bulan.\n\n");
+	printf("  3. Anda bisa melakukan proses saldo di setiap menu yang kami berikan, sehingga saldo Anda akan terpotong.\n\n");
+	printf("  4. Anda dapat melihat riwayat aktivitas yang pernah Anda lakukan di menu Riwayat.\n\n");
+	printf("  Tekan Enter untuk kembali");
+	
+}
+
+
+void riwayat(){
+
+ 	FILE *DATABASE;//inisialisasi file yaitu DATABASE.txt
+		
+printf("%s",str);
+ 
+ DATABASE=fopen("DATABASE.txt", "a");
+ if(DATABASE==NULL) {
+  printf("Kosong.\n");
+ } 
+ else {
+
+fprintf(DATABASE,"^-------------^\n");
+fprintf(DATABASE,"\nTabungan Tunggal: %s\n",str);
+fprintf(DATABASE,"\nTabungan Majemuk: %s\n",str1);
+fprintf(DATABASE,"\nAnuitas          : %s\n",str4);
+fprintf(DATABASE,"\nPenyusutan Maximum: %s\n",str2);
+fprintf(DATABASE,"\nPenyusutan Minimum: %s\n",str3);
+fprintf(DATABASE,"\n\n\n\n");
+
+ }
+ 
+ fclose(DATABASE);
+ system("cls");
+ int ch;
+  DATABASE=fopen("DATABASE.txt", "r");
+   if(DATABASE==NULL) {
+  puts("Can't open that file!");
+  exit(1);
+ }
+ while((ch=fgetc(DATABASE))!=EOF)
+ putchar(ch);
+ fclose(DATABASE);
+
+ system("pause");
+ 
+
+	
+}
+
 void keluar(){
 system("cls");
 int m;
@@ -233,6 +312,12 @@ printf("\t\t\t\t\t\t\t     ^\n");Sleep(40);
 
 
 void tabungan(){
+	
+	
+	
+
+
+
 system("cls");
 ai:
 ui_tabungan();
@@ -249,7 +334,7 @@ float periode = 0;
 printf("  Modal Awal Anda: Rp. %0.2f\n",saldo);
 printf("  Periode:");
 scanf("%f",&periode);
-
+p1 = periode;
 
 for(i=0;i<periode;i++){
     printf("\n  Rp. %0.2f\n",mop2(5,i+1,saldo));
@@ -331,6 +416,10 @@ parameterbaris=0;
 
 printf("\n  Rata-rata bunga Anda: Rp. %0.2f",jumlahbunga/periode);
 printf("\n\n  Tabungan Anda sekarang: Rp. %0.2f\n",mop2(5,periode,saldo));
+tbt = mop2(5,p1,saldo);
+tbtbaru = (int)round(tbt);
+asprintf(&str, "%d", tbtbaru);
+
 printf("  Tekan apapun untuk kembali.");
 jumlahbunga=0;
 getch();
@@ -342,6 +431,7 @@ case '2':
  printf("  Bunga Majemuk:\n\n\n");
  printf("  Periode:");
 scanf(" %f",&periode);
+p2=periode;
 printf("  Modal Awal Anda: Rp. %0.2f\n",saldo);
 printf("  Periode:");
 for(i=0;i<periode;i++){
@@ -421,6 +511,12 @@ parameterbaris=0;
 
 printf("\n  Rata-rata bunga Anda: Rp. %0.2f",jumlahbunga/periode);
 printf("\n\n  Tabungan Anda sekarang: Rp. %0.2f\n",mop(5,periode,saldo));
+
+tbm=mop(5,p2,saldo);
+
+tbmbaru = (int)round(tbm);
+asprintf(&str1, "%d", tbmbaru);
+
 printf("  Tekan apapun untuk kembali.");
 
 printf("  Tekan apapun untuk kembali.");
@@ -435,7 +531,7 @@ case '3':
  int i;
  printf("Periode: ");
  scanf("%d",&pe);
- 
+ pe1=pe;
  printf("Penyusutan Nilai buku sampai periode ke-%d:\n",pe);
  
  for(i=0;i<pe;i++){
@@ -475,7 +571,21 @@ for(i=0;i<pe*2;i++){
 }
 
 printf("\n  Nilai min = Rp. %0.2f\n",simpanpny1[(pe*2)-1]);
+nmax=simpanpny1[(pe1*2)-1];
+
+
+asprintf(&str2, "%d", nmax);
+
+
+
 printf("  Nilai max = Rp. %0.2f\n",simpanpny1[0]);
+nmin=simpanpny1[0];
+
+
+
+asprintf(&str3, "%d", nmin);
+
+
 getch();
 return tabungan();
 	break;
@@ -506,15 +616,16 @@ printf("\n  .===============.\n");
 printf("  |     MENU      |\n");
 printf("  '==============='\n\n\n");
 
-printf("  | 1 | Isi Saldo Rekening Anda\n\n  | 2 | Informasi Saldo\n\n  | 3 | Tabungan\n\n  | 4 | Pembayaran melalui Angsuran\n\n  | 5 | Tentang Program\n\n  | 6 | Keluar\n\n ");
+printf("  | 1 | Isi Saldo Rekening Anda\n\n  | 2 | Informasi Saldo\n\n  | 3 | Tabungan\n\n  | 4 | Pembayaran melalui Angsuran\n\n  | 5 | Tentang Program\n\n  | 6 | Help\n\n  | 7 | Riwayat\n\n  | 8 | Keluar\n\n ");
 printf("  Pilihan: ");
 scanf("%c",&switch1);
 switch(switch1){
 case '1':
     system("cls");
-    ui_saldo();
+    
     if (saldo!=0){
      salah:
+     	ui_saldo();
        printf("\n\n\n\n\n\t\t\t\t\t  Saldo Anda    : Rp. %0.2f \n",saldo);
        printf("\n\n\n\n\n\t\t\t\t\t  Tambah Saldo?");
        printf(" Ketik Y/T : ");
@@ -535,6 +646,7 @@ case '1':
         else{
          printf("  Salah!");
          Sleep(1000);
+         system("cls");
          goto salah;
   }
     }
@@ -546,16 +658,38 @@ case '1':
 
     if(tambahsaldo == 1){
     scanf("%f",&saldo2);
+ 
+    if(saldo2<50000){
+            printf("\n\n\t\t  Saldo tidak boleh kurang dari Rp, 50000,00\n");
+            Sleep(1000);
+            system("cls");
+            goto to;
+        }
+         if(saldo2>500000000){
+            printf("\n\n\t\t  Saldo tidak boleh lebih dari Rp, 500000000,00\n");
+            Sleep(1000);
+            system("cls");
+            goto to;
+        }
+    else{
     saldo = saldo + saldo2;
-
     printf("\n  Saldo sudah ditambahkan!");
     Sleep(1000);
     return menu();
+        }
+    
     }
     else{
         scanf("%f",&saldo);
         if(saldo<50000){
             printf("\n\n\t\t  Saldo tidak boleh kurang dari Rp, 50000,00\n");
+            Sleep(1000);
+            system("cls");
+            goto to;
+
+        }
+         if(saldo>500000000){
+            printf("\n\n\t\t  Saldo tidak boleh lebih dari Rp, 500000000,00\n");
             Sleep(1000);
             system("cls");
             goto to;
@@ -602,29 +736,33 @@ else{
  ui_angsuran();
  
     anuitas = (bunga_persen/100 * pinjaman[0])/(1 - pow((1 + bunga_persen/100), - bulan));
+    asprintf(&str4, "%d", anuitas);
 
     printf("  Anuitas : %d\n\n", anuitas);
-printf("     .-------------------------------------------------------.\n");
-printf("     | Nomor    |   Modal      | Bunga | Tetapan  | Sisa     |\n");
-printf("     | Angsuran |  Pinjaman    | BANK  | Angsuran | Pinjaman |\n");
+    
+printf("     .----------------------------------------------------------.\n");
+printf("     | Nomor    |   Modal       | Bunga | Tetapan  |  Sisa      |\n");
+printf("     | Angsuran |  Pinjaman     | BANK  | Angsuran |  Pinjaman  |\n");
+printf("     '----------------------------------------------------------'");
     while (pinjaman[hitung]>0){
            hitung++;
 
            bunga = pinjaman[hitung - 1]*0.05;
            angsuran=anuitas-bunga;
-printf("\n        %d",hitung);
+printf("\n     |   %d",hitung);
          
 
-     printf("\t   %d",pinjaman[hitung - 1]);
-     printf("\t%d",bunga);
-	 printf("\t  %d",angsuran);
-     printf("    %d",pinjaman[hitung - 1] - angsuran);
+     printf("\t|  %d",pinjaman[hitung - 1]);
+     printf("\t| %d",bunga);
+	 printf("\t| %d",angsuran);
+     printf("    |  %d\t|",pinjaman[hitung - 1] - angsuran);
     // printf("\t",pinjaman[hitung - 1] - angsuran);
            pinjaman[hitung] = pinjaman[hitung - 1] - angsuran;
       
 
 
     }
+    printf("\n     '----------------------------------------------------------'\n");
 
     printf("\n  Pinjaman anda telah lunas setelah %d", hitung);printf(" bulan dengan kembalian sebesar %d", -1*(pinjaman[hitung - 1]-angsuran));
  	getch();
@@ -634,16 +772,27 @@ printf("\n        %d",hitung);
     system("cls");
     
     ui_tentangprogram();
-    
-	printf("Bunga Tunggal = Jika Sebuah modal sebesar M disimpan di bank (dipinjamkan)\n\n dengan bunga tunggal sebesar b dalam suatu periode (yang telah disepakati) \n\n");
-	printf("Bunga majemuk = bunga yang dibebankan untuk setiap periode didasarkan pada modal/pinjaman\n\n pokok ditambah setiap beban bunga yang terakumulasi sampai dengan awal periode  \n\n");
-	printf("Anuitas = serangkaian pembayaran pinjaman dengan jumlah yang sama dalam periode waktu yang sama pula \n\n");
-	printf("Rencana Pelunasan Angsuran = Menggunakan anuitas untuk melunasi angsuran yang ada  \n\n");
-	printf("  Kembali ke Menu\n");
+    printf("  *Sistem Komputasi Tabungan dan Rencana Pelunasan Angsuran menggunakan metode Array adalah fitur yang menampilkan\n  nilai tabungan yang telah kita tabung beserta bunganya tiap periodenya dalam hal ini terbagi atas dua bunga tunggal\n  dan majemuk dimana didalamnya terdapat penyusutan suatu barang yang terbagi atas dua yaitu penyusutan nilai buku\n  dan harga beli.\n\n");
+	printf("  *Sistem Komputasi Tabungan dan Rencana Pelunasan Angsuran siap memandu para pengguna dalam kegiatan menabung dan\n  meminjam uang untuk kepentingan suatu hal baik itu membeli barang baik itu secara tunai maupun kredit dalam hal ini\n  juga ditampilkan berapa angsuran yang harus pengguna bayar sesuai dengan anuitas yang bank miliki.\n\n");
+	printf("  Bunga Tunggal = Jika Sebuah modal sebesar M disimpan di bank (dipinjamkan)\n  dengan bunga tunggal sebesar b dalam suatu periode (yang telah disepakati). \n\n");
+	printf("  Bunga majemuk = bunga yang dibebankan untuk setiap periode didasarkan pada modal/pinjaman\n  pokok ditambah setiap beban bunga yang terakumulasi sampai dengan awal periode.  \n\n");
+	printf("  Anuitas = serangkaian pembayaran pinjaman dengan jumlah yang sama dalam periode waktu yang sama pula. \n\n");
+	printf("  Rencana Pelunasan Angsuran = Menggunakan anuitas untuk melunasi angsuran yang ada.  \n\n");
+	printf("  Tekan Enter Kembali ke Menu");
    	getch();
  	return menu();
     break;
     case '6':
+    system("cls");
+	ui_help();
+	help();
+	getch();
+	return menu();
+    break;
+    case '7':
+    riwayat();
+    break;
+    case '8':
     keluar();
     break;
     default:
@@ -666,7 +815,6 @@ menu();
 
 return 0;
 }
-
 
 
 
